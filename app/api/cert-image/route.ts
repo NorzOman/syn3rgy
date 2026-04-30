@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
+  const format = searchParams.get("format");
 
   if (!code) {
     return new NextResponse("Missing code", { status: 400 });
@@ -15,7 +16,9 @@ export async function GET(req: Request) {
     );
 
     // ❗ important: preserve content-type (image/png)
-    const contentType = upstream.headers.get("content-type") || "image/png";
+    const contentType =
+      upstream.headers.get("content-type") ||
+      (format === "pdf" ? "application/pdf" : "image/png");
 
     const buffer = await upstream.arrayBuffer();
 
@@ -25,6 +28,9 @@ export async function GET(req: Request) {
         "Content-Type": contentType,
         // optional but good:
         "Cache-Control": "public, max-age=3600",
+          ...(format === "pdf" && {
+          "Content-Disposition": `attachment; filename="certificate-${code}.pdf"`,
+        }),
       },
     });
   } catch {

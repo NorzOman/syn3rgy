@@ -6,7 +6,7 @@ export default function CertImage({ src }: { src: string }) {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className="relative w-full max-w-[720px] overflow-hidden border border-stone-800/50">
+    <div className="relative w-full max-w-[720px] min-h-[300px] overflow-hidden border border-stone-800/50">
       
       {/* Skeleton */}
       {!loaded && (
@@ -23,7 +23,7 @@ export default function CertImage({ src }: { src: string }) {
         onError={() => setLoaded(true)}
         ref={(img) => {
           if (img && img.complete) {
-            setLoaded(true); // ✅ handles cached images
+            setLoaded(true);
           }
         }}
         className={`w-full block transition-opacity duration-500 ${
