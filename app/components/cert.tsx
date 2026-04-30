@@ -6,7 +6,7 @@ export default function CertImage({ src }: { src: string }) {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className="relative w-full max-w-[720px] min-h-[300px] overflow-hidden border border-stone-800/50">
+    <div className="relative w-full max-w-[720px] min-h-[200px] md:min-h-[300px] overflow-hidden border border-stone-800/50">
       
       {/* Skeleton */}
       {!loaded && (
