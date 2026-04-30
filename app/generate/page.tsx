@@ -16,7 +16,7 @@ function ErrorBanner({ message }: { message: string }) {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      className="mb-6 border border-red-500/80 bg-red-500/10 px-4 py-3 rounded-sm relative overflow-hidden"
+      className="border border-red-500/80 bg-red-500/10 px-4 py-3 rounded-sm relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(236,72,153,0.2),transparent_70%)]" />
       <div className="relative flex items-center justify-between">
@@ -26,26 +26,6 @@ function ErrorBanner({ message }: { message: string }) {
         <span className="text-red-400 animate-pulse">⚡</span>
       </div>
     </motion.div>
-  );
-}
-
-/* ---------------- INPUT FIELD WITH NEON BORDERS ---------------- */
-function InputField({ label, value, onChange, placeholder, suit }: any) {
-  return (
-    <div className="relative mb-6">
-      <label className="text-xs uppercase tracking-widest text-red-400 font-mono font-bold flex items-center gap-2 mb-2">
-        {suit} {label}
-      </label>
-
-      <div className="relative group">
-        <input
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className="w-full px-4 py-3 bg-black border border-red-500/40 rounded-sm text-white placeholder-red-900/50 outline-none focus:border-red-500 focus:shadow-[0_0_20px_rgba(236,72,153,0.3)] transition-all font-mono text-sm uppercase"
-        />
-      </div>
-    </div>
   );
 }
 
@@ -263,10 +243,19 @@ export default function CertificateGenerator() {
                 />
               </div>
             </div>
+            <AnimatePresence>
+              {globalError && (
+                <div className="mt-8">
+                  <ErrorBanner message={globalError} />
+                </div>
+              )}
+            </AnimatePresence>
+            
+            
 
             {/* ACTION BUTTON */}
             <button 
-              className="group relative w-full mt-12 bg-zinc-100 hover:bg-red-600 py-4 transition-all duration-300 overflow-hidden"
+              className="group relative w-full mt-8 bg-zinc-100 hover:bg-red-600 py-4 transition-all duration-300 overflow-hidden"
             >
               <div className="relative z-10 flex items-center justify-center gap-3 text-black group-hover:text-white font-black uppercase tracking-widest">
                 {status === "loading" ? "Verifying..." : "Claim Certificate"}

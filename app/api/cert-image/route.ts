@@ -28,7 +28,7 @@ export async function GET(req: Request) {
         "Content-Type": contentType,
         // optional but good:
         "Cache-Control": "public, max-age=3600",
-          ...(format === "pdf" && {
+        ...(format === "pdf" && {
           "Content-Disposition": `attachment; filename="certificate-${code}.pdf"`,
         }),
       },
