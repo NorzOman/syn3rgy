@@ -16,9 +16,7 @@ export async function GET(req: Request) {
     );
 
     // ❗ important: preserve content-type (image/png)
-    const contentType =
-      upstream.headers.get("content-type") ||
-      (format === "pdf" ? "application/pdf" : "image/png");
+    const contentType = format === "pdf" ? "application/pdf" : upstream.headers.get("content-type") || "image/png";
 
     const buffer = await upstream.arrayBuffer();
 
