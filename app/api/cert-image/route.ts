@@ -11,24 +11,26 @@ export async function GET(req: Request) {
 
   try {
     const upstream = await fetch(
-      `https://djsceisaca.tech/api/cert-image?code=${encodeURIComponent(code)}`,
+      `https://djsceisaca.tech/api/cert-image?code=${encodeURIComponent(code)}&format=${format || "png"}`,
       { cache: "no-store" }
     );
 
-    // ❗ important: preserve content-type (image/png)
-    const contentType = format === "pdf" ? "application/pdf" : upstream.headers.get("content-type") || "image/png";
-
     const buffer = await upstream.arrayBuffer();
+
+    
 
     return new NextResponse(buffer, {
       status: upstream.status,
       headers: {
-        "Content-Type": contentType,
-        // optional but good:
+        "Content-Type": upstream.headers.get("content-type") || "application/octet-stream",
+
+        "Content-Disposition":
+          upstream.headers.get("content-disposition") ||
+          (format === "pdf"
+            ? `attachment; filename="certificate-${code}.pdf"`
+            : `inline`),
+
         "Cache-Control": "public, max-age=3600",
-        ...(format === "pdf" && {
-          "Content-Disposition": `attachment; filename="certificate-${code}.pdf"`,
-        }),
       },
     });
   } catch {
